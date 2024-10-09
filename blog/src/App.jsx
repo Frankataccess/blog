@@ -1,31 +1,48 @@
 import BlogPreview from "./components/BlogPreview";
 import NavBar from "./components/navbar";
+import {useState,useEffect} from "react"
 
-const  App= () => {
-  
-  //Logic
+const App = () => {
 
-  const title = "Hello"
+  //useState
+  const [title,setTitle] = useState("Hello");
 
-  return ( 
+  const[lessons,setLessons] = useState([
+    {title:"Into to React", author:"Joel", id:1,},
+    {title:"Front end dev", author:"Joel", id:2,},
+    {title:"Figma Tutorial", author:"Joel", id:3,},
+    {title:"Flask", author:"Joe", id:4,},
+    {title:"Industry Concepts", author:"Brad", id:5,},
+  ]);
+
+  const handleDelete = (id) => {
+    const newLessons = lessons.filter((l) => l.id !== id)
+    setLessons(newLessons)
+  }
+
+  useEffect(() => {
+    console.log("refreshed")
+  }, []);
+
+
+  return (
     <div className="bg-slate-500">
       <NavBar />
-      <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, magni!</h2>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, quos.</p>
       <div className="content">
-        <a href="https://vitejs.dev/guide/" target="_blank">Learn React</a>
-        <BlogPreview/>
-        <BlogPreview/>
-        <BlogPreview/>
-        <BlogPreview/>
-        <BlogPreview/>
-        <BlogPreview/>
-        <BlogPreview/>
+        <h1 className="Text 5x1">{title}</h1>
+
+        <button onClick={() => setTitle("Bonjhour")}>Change Title</button>
+
+        {
+          lessons.map((l) => (
+            <BlogPreview lesson={l} key={l.id} handleDelete={handleDelete}/>
+          ))
+        }
+
 
       </div>
     </div>
-  );
-}
-
-
+   );
+} 
+ 
 export default App;
