@@ -1,48 +1,25 @@
 import BlogPreview from "./components/BlogPreview";
 import NavBar from "./components/navbar";
-import {useState,useEffect} from "react"
+import useFetch from "./hooks/useFetch"; // Ensure you import your custom hook
 
 const App = () => {
-
-  //useState
-  const [title,setTitle] = useState("Hello");
-
-  const[lessons,setLessons] = useState([
-    {title:"Into to React", author:"Joel", id:1,},
-    {title:"Front end dev", author:"Joel", id:2,},
-    {title:"Figma Tutorial", author:"Joel", id:3,},
-    {title:"Flask", author:"Joe", id:4,},
-    {title:"Industry Concepts", author:"Brad", id:5,},
-  ]);
-
-  const handleDelete = (id) => {
-    const newLessons = lessons.filter((l) => l.id !== id)
-    setLessons(newLessons)
-  }
-
-  useEffect(() => {
-    console.log("refreshed")
-  }, []);
-
+  const { posts, isPending, error } = useFetch("https://dummyjson.com/posts"); // Assuming useFetch returns { posts, isPending, error }
 
   return (
     <div className="bg-timberwolf">
       <NavBar />
       <div className="content">
-        <h1 className="text 5x1 font-heading">{title}</h1>
+        <h1 className="text-5xl font-heading">API Calls</h1>
+        
+        {isPending && <p>Loading...</p>}
+        {error && <p>{error}</p>} {/* Display the error message */}
 
-        <button onClick={() => setTitle("Bonjhour")}>Change Title</button>
-
-        {
-          lessons.map((l) => (
-            <BlogPreview lesson={l} key={l.id} handleDelete={handleDelete}/>
-          ))
-        }
-
-
+        {posts.length > 0 && posts.map((p) => ( // Use descriptive name for post
+          <BlogPreview lesson={p} key={p.id} /> // Correct variable name for the key
+        ))}
       </div>
     </div>
   );
-} 
+};
 
 export default App;
