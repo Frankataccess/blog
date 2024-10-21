@@ -9,7 +9,7 @@ const BlogPreview = ({lesson, handleDelete}) => {
           <button className="bg-red-400 text-white" onClick={() => handleDelete(lesson.id)}>Delete Lesson</button>
         </section>
         </>
-     );
+    );
 }
- 
+
 export default BlogPreview;
