@@ -1,24 +1,30 @@
 import BlogPreview from "./components/BlogPreview";
 import NavBar from "./components/navbar";
 import useFetch from "./hooks/useFetch"; // Ensure you import your custom hook
+import Home from "./home";
+import { BrowserRouter ,Routes,Route} from "react-router-dom";
+import BlogDetails from "./BlogDetails";
+import About from "./about";
 
 const App = () => {
-  const { posts, isPending, error } = useFetch("https://dummyjson.com/posts"); // Assuming useFetch returns { posts, isPending, error }
+  // const { data, isPending, error } = useFetch("https://dummyjson.com/posts");
 
   return (
-    <div className="bg-timberwolf">
-      <NavBar />
-      <div className="content">
-        <h1 className="text-5xl font-heading">API Calls</h1>
-        
-        {isPending && <p>Loading...</p>}
-        {error && <p>{error}</p>} {/* Display the error message */}
-
-        {posts.length > 0 && posts.map((p) => ( // Use descriptive name for post
-          <BlogPreview lesson={p} key={p.id} /> // Correct variable name for the key
-        ))}
+    <BrowserRouter>
+      <div className="bg-timberwolf">
+        <NavBar />
+        <Routes>
+          {/* Home route */}
+          <Route exact path="/" element={<Home />}/>
+          {/*About route */}
+          <Route exact path="/about" element = {<About />} />
+          {/*Blog details */}
+          <Route exact path="blog/:id" element={<BlogDetails/>}/>
+          {/* Error catcher*/}
+          <Route path="*" element = {<h1>Error page not found</h1>}/>
+        </Routes>
       </div>
-    </div>
+    </BrowserRouter>
   );
 };
 
